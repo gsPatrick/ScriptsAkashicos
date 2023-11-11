@@ -1,13 +1,13 @@
 package model;
 import dao.*;
-public class Vendedor {
+public class Consumidor {
     private String email;
     private String senha;
     private String nome;
     private String cpf;
 
     // Construtor
-    public Vendedor(String email, String senha, String nome, String cpf) {
+    public Consumidor(String email, String senha, String nome, String cpf) {
         this.email = email;
         this.senha = senha;
         this.nome = nome;
@@ -15,7 +15,7 @@ public class Vendedor {
     }
 
     // Construtor vazio
-    public Vendedor() {
+    public Consumidor() {
     }
 
     // Getters e Setters
