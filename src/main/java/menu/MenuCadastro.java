@@ -6,11 +6,15 @@ import java.util.Scanner;
 
 public class MenuCadastro {
     static Scanner scanner = new Scanner(System.in);
+    private ConsumidorDAO consumidorDAO = new ConsumidorDAO();
+    private VendedorDAO vendedorDAO = new VendedorDAO();
+    private MenuLogin menuLogin;
+
+    public MenuCadastro(MenuLogin menuLogin) {
+        this.menuLogin = menuLogin;
+    }
 
     public void exibirMenuCadastro() {
-
-
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("Escolha uma opção:");
@@ -68,6 +72,8 @@ public class MenuCadastro {
 
         // Chamar o método cadastrarVendedor do VendedorDAO
         vendedorDAO.cadastrarVendedor(novoVendedor);
+
+
 
     }
 
@@ -127,6 +133,35 @@ public class MenuCadastro {
         // Chamar o método cadastrarConsumidor do ConsumidorDAO
         consumidorDAO.cadastrarConsumidor(novoConsumidor);
 
+    }
+
+    private void exibirOpcoesAposCadastro() {
+        System.out.println("O que você deseja fazer agora?");
+        System.out.println("1 - Entrar na conta");
+        System.out.println("2 - Realizar outra ação");
+        System.out.println("0 - Sair");
+
+        try {
+            int opcao = Integer.parseInt(scanner.nextLine());
+
+            switch (opcao) {
+                case 1:
+                    menuLogin.exibirMenuLogin(); // Chama a função exibirMenuLogin do MenuLogin
+                    break;
+                case 2:
+                    // Realizar outra ação (pode chamar um método específico para isso)
+                    break;
+                case 0:
+                    System.out.println("Saindo...");
+                    System.exit(0);
+                default:
+                    System.out.println("Opção inválida. Saindo...");
+                    System.exit(0);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Por favor, insira um número válido. Saindo...");
+            System.exit(0);
+        }
     }
 
 }

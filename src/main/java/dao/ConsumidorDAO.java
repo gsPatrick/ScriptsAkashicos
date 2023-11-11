@@ -1,9 +1,7 @@
 package dao;
 import model.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,5 +35,44 @@ public class ConsumidorDAO {
                 e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
             }
         }
+    }
+
+    private static final String buscar_consumidor_por_cpf = "SELECT * FROM consumidor WHERE cpf = ?";
+    private static final String validar_senha_consumidor = "SELECT * FROM consumidor WHERE cpf = ? AND senha = ?";
+
+    public boolean validarCPFConsumidor(String cpf) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(buscar_consumidor_por_cpf))
+
+             {
+
+            preparedStatement.setString(1, cpf);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next(); // Se houver resultados, o CPF é válido
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
+            return false;
+        }
+    }
+
+    public boolean validarSenhaConsumidor(String cpf, String senha) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(validar_senha_consumidor)) {
+
+            preparedStatement.setString(1, cpf);
+            preparedStatement.setString(2, senha);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next(); // Se houver resultados, a senha é válida
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
+            return false;
+        }
+
     }
 }

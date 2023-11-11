@@ -1,9 +1,7 @@
 package dao;
 import model.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -38,4 +36,43 @@ public class VendedorDAO {
             }
         }
     }
+
+    private static final String buscar_vendedor_por_cpf = "SELECT * FROM vendedor WHERE cpf = ?"; // Busca o CPF na tabela vendedor
+    private static final String validar_senha_vendedor = "SELECT * FROM vendedor WHERE cpf = ? AND senha = ?";
+
+
+    public boolean validarCPFVendedor(String cpf) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(buscar_vendedor_por_cpf)) {
+
+            preparedStatement.setString(1, cpf);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next(); // Se houver resultados, o CPF é válido
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
+            return false;
+        }
+    }
+
+    public boolean validarSenhaVendedor(String cpf, String senha) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(validar_senha_vendedor)) {
+
+            preparedStatement.setString(1, cpf);
+            preparedStatement.setString(2, senha);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next(); // Se houver resultados, a senha é válida
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
+            return false;
+        }
+    }
+
+
 }
