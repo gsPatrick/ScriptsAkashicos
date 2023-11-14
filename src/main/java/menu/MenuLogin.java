@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 
 public class MenuLogin {
+
+    MenuVendedor menuVendedor = new MenuVendedor();
+
     private Scanner scanner = new Scanner(System.in);
         private ConsumidorDAO consumidorDAO;
         private VendedorDAO vendedorDAO;
@@ -67,7 +70,7 @@ public class MenuLogin {
 
                     if (vendedorDAO.validarSenhaVendedor(cpf, senha)) {
                         System.out.println("Login bem-sucedido como vendedor!");
-                        // Adicione sua lógica adicional para vendedores aqui.
+                        menuVendedor.menuPrincipal();
                         return;
                     } else {
                         System.out.println("Senha incorreta. Tentativas restantes: " + (2 - tentativaSenha));
