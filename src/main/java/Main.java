@@ -5,16 +5,22 @@ import menu.*;
 import java.sql.Connection;
 import java.util.Scanner;
 
+
 public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         ConsumidorDAO consumidorDAO = new ConsumidorDAO();
         VendedorDAO vendedorDAO = new VendedorDAO();
+        AdicionarCursoDAO adicionarCursoDAO = new AdicionarCursoDAO();
 
-
-        MenuLogin menuLogin = new MenuLogin(consumidorDAO, vendedorDAO);
+        // Criar instâncias necessárias
+        MenuVendedor menuVendedor = new MenuVendedor(adicionarCursoDAO, vendedorDAO, null);
+        MenuLogin menuLogin = new MenuLogin(consumidorDAO, vendedorDAO, menuVendedor);
         MenuCadastro menuCadastro = new MenuCadastro(menuLogin);
+
+
+
 
 
         System.out.println("Seja bem-vindo ao Scripts Akáshicos");
@@ -40,7 +46,6 @@ public class Main {
             }
         } while (opcao != 0);
 
-        scanner.close();
     }
 
     private static void exibirMenuEscolha() {

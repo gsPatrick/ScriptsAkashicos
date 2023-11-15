@@ -11,7 +11,7 @@ public class AdicionarCursoDAO {
         connection = Conexao.getConecction();
     }
 
-    public void adicionarCurso(Curso curso, String nomeDono) {
+    public void adicionarCurso(Curso curso, String nomeDono, String nomedonocurso ) {
         try {
             // Antes de adicionar o curso, obtenha o ID do vendedor pelo nome
             int idDono = obterIdVendedorPorNome(nomeDono);
@@ -20,13 +20,14 @@ public class AdicionarCursoDAO {
                 throw new RuntimeException("Vendedor não encontrado");
             }
 
-            String sql = "INSERT INTO adicionarcurso (nomeCurso, resumoCurso, conteudoCurso, valorCurso, donoCurso) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO adicionarcurso (nomeCurso, resumoCurso, conteudoCurso, valorCurso, donoCurso, nomedonocurso) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, curso.getNomeCurso());
             statement.setString(2, curso.getResumoCurso());
             statement.setString(3, curso.getConteudoCurso());
             statement.setDouble(4, curso.getValorCurso());
             statement.setInt(5, idDono); // Adiciona o id do dono como a chave estrangeira
+            statement.setString(6, nomedonocurso);
 
             statement.executeUpdate();
         } catch (SQLException e) {

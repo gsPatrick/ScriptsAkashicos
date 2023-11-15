@@ -74,5 +74,48 @@ public class VendedorDAO {
         }
     }
 
+    public int obterIdVendedorPorCPF(String cpf) {
+        int idVendedor = -1; // Valor padrão, indicando que o ID não foi encontrado
+
+        try (Connection connection = Conexao.getConecction()) {
+            String sql = "SELECT id FROM vendedor WHERE cpf = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, cpf);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        idVendedor = resultSet.getInt("id");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Considere fazer um tratamento de exceção mais robusto em um ambiente real
+        }
+
+        return idVendedor;
+    }
+
+    public String obterNomeVendedorPorCPF(String cpf) {
+        String nomeVendedor = null; // Valor padrão, indicando que o nome não foi encontrado
+
+        try (Connection connection = Conexao.getConecction()) {
+            String sql = "SELECT nome FROM vendedor WHERE cpf = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, cpf);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        nomeVendedor = resultSet.getString("nome");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Considere fazer um tratamento de exceção mais robusto em um ambiente real
+        }
+
+        return nomeVendedor;
+    }
+
+
 
 }

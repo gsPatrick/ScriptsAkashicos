@@ -3,10 +3,16 @@ import dao.*;
 import java.util.Scanner;
 public class MenuVendedor {
     private AdicionarCursoDAO adicionarCursoDAO;
-    Scanner scanner = new Scanner(System.in);
+    private VendedorDAO vendedorDAO;
+    private MenuLogin menuLogin;
+    private Scanner scanner;
 
-    public MenuVendedor() {
-        adicionarCursoDAO = new AdicionarCursoDAO();
+
+    public MenuVendedor(AdicionarCursoDAO adicionarCursoDAO, VendedorDAO vendedorDAO, MenuLogin menuLogin) {
+        this.adicionarCursoDAO = adicionarCursoDAO;
+        this.vendedorDAO = vendedorDAO;
+        this.menuLogin = menuLogin;
+        this.scanner = new Scanner(System.in);
     }
 
 
@@ -44,10 +50,15 @@ public class MenuVendedor {
             }
         } while (!valorValido);
 
+        int idVendedor = menuLogin.getIdVendedorLogado(); // Desejo chamar aqui e colocar na tabela banco de dados
+        String idVendedorString = String.valueOf(idVendedor);
+        String nomedonoCurso = vendedorDAO.obterNomeVendedorPorCPF(idVendedorString);
 
-        // Adiciona o curso ao banco de dados
         AdicionarCursoDAO.Curso novoCurso = new AdicionarCursoDAO.Curso(nomeCurso, resumoCurso, "", valorCurso);
-        adicionarCursoDAO.adicionarCurso(novoCurso, "Patrick Gomes Siqueira");
+        adicionarCursoDAO.adicionarCurso(novoCurso, idVendedorString, nomedonoCurso);
+
+
+
 
         System.out.println("Curso adicionado com sucesso!");
     }
@@ -147,18 +158,18 @@ public class MenuVendedor {
 
 
 
-    public void voltarAtualizarMaisUmDado () {
-
+    public void voltarAtualizarMaisUmDado() {
         int opcaoVoltarAtualizarMaisUmDado = -1;
 
         while (opcaoVoltarAtualizarMaisUmDado != 0) {
-            try{
+            try {
                 System.out.println("1 - Atualizar mais um dado");
                 System.out.println("0 - Voltar");
 
+                opcaoVoltarAtualizarMaisUmDado = scanner.nextInt();
+                scanner.nextLine();  // Consumir a quebra de linha após a leitura do número
 
-                switch (opcaoVoltarAtualizarMaisUmDado){
-
+                switch (opcaoVoltarAtualizarMaisUmDado) {
                     case 1:
                         AtualizarDadoCurso();
                         break;
@@ -170,10 +181,10 @@ public class MenuVendedor {
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("Erro");
+                System.out.println("Erro teste");
+                scanner.nextLine();  // Limpar o buffer do scanner em caso de exceção
             }
         }
-
     }
 
 
@@ -193,15 +204,13 @@ public class MenuVendedor {
 
                 switch (opcaoAtualizarDado) {
                     case 1:
-
-
-                        //atualizarNomeCurso();
+//atualizarNomeCurso();
                         break;
                     case 2:
-                        //atualizarResumoCurso();
+                     //   atualizarResumoCurso();
                         break;
                     case 3:
-                        //atualizarValorCurso();
+                     //   atualizarValorCurso();
                         break;
                     case 0:
                         escolherAtualizacao();
@@ -216,6 +225,7 @@ public class MenuVendedor {
             }
         }
     }
+
 
     public void escolherAtualizacao () {
 
@@ -431,8 +441,7 @@ public class MenuVendedor {
 
 
             } catch (Exception e) {
-                System.out.println("Erro");
-                scanner.nextLine();
+                System.out.println("Erro teste2");
             }
 
         }

@@ -8,16 +8,18 @@ import java.util.Scanner;
 
 public class MenuLogin {
 
-    MenuVendedor menuVendedor = new MenuVendedor();
-
+    private MenuVendedor menuVendedor;
     private Scanner scanner = new Scanner(System.in);
-        private ConsumidorDAO consumidorDAO;
-        private VendedorDAO vendedorDAO;
+    private ConsumidorDAO consumidorDAO;
+    private VendedorDAO vendedorDAO;
 
-        public MenuLogin(ConsumidorDAO consumidorDAO, VendedorDAO vendedorDAO) {
-            this.consumidorDAO = consumidorDAO;
-            this.vendedorDAO = vendedorDAO;
-        }
+    private int idVendedorLogado = -1;
+
+    public MenuLogin(ConsumidorDAO consumidorDAO, VendedorDAO vendedorDAO, MenuVendedor menuVendedor) {
+        this.consumidorDAO = consumidorDAO;
+        this.vendedorDAO = vendedorDAO;
+        this.menuVendedor = menuVendedor;
+    }
 
         public void exibirMenuLogin() {
 
@@ -69,6 +71,13 @@ public class MenuLogin {
                     String senha = scanner.next();
 
                     if (vendedorDAO.validarSenhaVendedor(cpf, senha)) {
+                        idVendedorLogado = vendedorDAO.obterIdVendedorPorCPF(cpf);
+
+                        // Obter o nome do vendedor usando o CPF
+                        String nomeVendedorLogado = vendedorDAO.obterNomeVendedorPorCPF(cpf);
+
+                        System.out.println("ID do vendedor logado: " + idVendedorLogado);
+                        System.out.println("Nome do vendedor logado: " + nomeVendedorLogado);
                         System.out.println("Login bem-sucedido como vendedor!");
                         menuVendedor.menuPrincipal();
                         return;
@@ -113,4 +122,17 @@ public class MenuLogin {
     }
 
 
+    // Métodos existentes...
+
+    public int getIdVendedorLogado() {
+        return idVendedorLogado;
     }
+
+    public void setIdVendedorLogado(int idVendedorLogado) {
+        this.idVendedorLogado = idVendedorLogado;
+    }
+}
+
+
+
+
