@@ -74,46 +74,49 @@ public class VendedorDAO {
         }
     }
 
-    public int obterIdVendedorPorCPF(String cpf) {
-        int idVendedor = -1; // Valor padrão, indicando que o ID não foi encontrado
+    private static final String obterIdCPF = "SELECT id FROM vendedor WHERE cpf = ?";
 
-        try (Connection connection = Conexao.getConecction()) {
-            String sql = "SELECT id FROM vendedor WHERE cpf = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, cpf);
+    public int obterIdPorCPF(String cpf) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(obterIdCPF)) {
 
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        idVendedor = resultSet.getInt("id");
-                    }
+            preparedStatement.setString(1, cpf);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id"); // Retorna o ID se houver resultados
+                } else {
+                    return -1; // Retorna -1 se não houver resultados
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Considere fazer um tratamento de exceção mais robusto em um ambiente real
-        }
 
-        return idVendedor;
+        } catch (SQLException e) {
+            e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
+            return -1;
+        }
     }
 
-    public String obterNomeVendedorPorCPF(String cpf) {
-        String nomeVendedor = null; // Valor padrão, indicando que o nome não foi encontrado
 
-        try (Connection connection = Conexao.getConecction()) {
-            String sql = "SELECT nome FROM vendedor WHERE cpf = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, cpf);
+    private static final String obterNomeCPF = "SELECT nome FROM vendedor WHERE cpf = ?";
 
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        nomeVendedor = resultSet.getString("nome");
-                    }
+    public String obterNomePorCPF(String cpf) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(obterNomeCPF)) {
+
+            preparedStatement.setString(1, cpf);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("nome"); // Retorna o nome se houver resultados
+                } else {
+                    return null; // Retorna null se não houver resultados
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Considere fazer um tratamento de exceção mais robusto em um ambiente real
-        }
 
-        return nomeVendedor;
+        } catch (SQLException e) {
+            e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
+            return null;
+        }
     }
 
 

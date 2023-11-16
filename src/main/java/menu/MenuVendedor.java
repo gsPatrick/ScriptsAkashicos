@@ -1,449 +1,192 @@
 package menu;
 import dao.*;
+import model.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 public class MenuVendedor {
-    private AdicionarCursoDAO adicionarCursoDAO;
-    private VendedorDAO vendedorDAO;
-    private MenuLogin menuLogin;
-    private Scanner scanner;
 
 
-    public MenuVendedor(AdicionarCursoDAO adicionarCursoDAO, VendedorDAO vendedorDAO, MenuLogin menuLogin) {
-        this.adicionarCursoDAO = adicionarCursoDAO;
-        this.vendedorDAO = vendedorDAO;
-        this.menuLogin = menuLogin;
-        this.scanner = new Scanner(System.in);
-    }
+        //Instancia objetos
+        private VendedorDAO vendedorDAO;
+        private Vendedor vendedor;
+        private Scanner scanner;
 
-
-
-    public void adicionarCurso() {
-
-        // Nome do curso
-        String nomeCurso;
-        do {
-            System.out.print("Nome do curso: ");
-            nomeCurso = scanner.nextLine().trim();
-        } while (!nomeCurso.matches("[a-zA-Z ]+"));
-
-        // Resumo do curso
-        String resumoCurso;
-        do {
-            System.out.print("Resumo do curso: ");
-            resumoCurso = scanner.nextLine().trim();
-        } while (!resumoCurso.matches("[a-zA-Z ]+"));
-
-        // Conteúdo do curso (pulamos)
-
-        // Valor do curso
-        double valorCurso = 0.0;
-        boolean valorValido = false;
-        do {
-            System.out.print("Valor do curso: ");
-            String inputValor = scanner.nextLine().trim();
-
-            try {
-                valorCurso = Double.parseDouble(inputValor);
-                valorValido = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Por favor, insira um valor numérico válido.");
-            }
-        } while (!valorValido);
-
-        int idVendedor = menuLogin.getIdVendedorLogado(); // Desejo chamar aqui e colocar na tabela banco de dados
-        String idVendedorString = String.valueOf(idVendedor);
-        String nomedonoCurso = vendedorDAO.obterNomeVendedorPorCPF(idVendedorString);
-
-        AdicionarCursoDAO.Curso novoCurso = new AdicionarCursoDAO.Curso(nomeCurso, resumoCurso, "", valorCurso);
-        adicionarCursoDAO.adicionarCurso(novoCurso, idVendedorString, nomedonoCurso);
-
-
-
-
-        System.out.println("Curso adicionado com sucesso!");
-    }
-
-
-    public void atualizarCurso () {
-
-        // Nome do curso
-        String nomeCurso;
-        do {
-            System.out.print("Nome do curso: ");
-            nomeCurso = scanner.nextLine().trim();
-        } while (!nomeCurso.matches("[a-zA-Z ]+"));
-
-        // Resumo do curso
-        String resumoCurso;
-        do {
-            System.out.print("Resumo do curso: ");
-            resumoCurso = scanner.nextLine().trim();
-        } while (!resumoCurso.matches("[a-zA-Z ]+"));
-
-        // Conteúdo do curso (pulamos)
-
-        // Valor do curso
-        double valorCurso = 0.0;
-        boolean valorValido = false;
-        do {
-            System.out.print("Valor do curso: ");
-            String inputValor = scanner.nextLine().trim();
-
-            try {
-                valorCurso = Double.parseDouble(inputValor);
-                valorValido = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Por favor, insira um valor numérico válido.");
-            }
-        } while (!valorValido);
-
-        AdicionarCursoDAO.Curso cursoAtualizado = new AdicionarCursoDAO.Curso(nomeCurso, resumoCurso, "", valorCurso);
-        adicionarCursoDAO.atualizarCurso(cursoAtualizado);
-
-
-    }
-
-    public void atualizarNomeCurso(int idDoCurso) {
-        String novoNome;
-        do {
-            System.out.print("Novo nome do curso: ");
-            novoNome = scanner.nextLine().trim();
-        } while (!novoNome.matches("[a-zA-Z ]+"));
-
-        // Chama o método de atualização na classe DAO
-        adicionarCursoDAO.atualizarNomeCursoPorId(idDoCurso, novoNome);
-        System.out.println("Nome do curso atualizado com sucesso!");
-
-        voltarAtualizarMaisUmDado ();
-    }
-
-    // Função para atualizar o resumo do curso
-    public void atualizarResumoCurso(int idDoCurso) {
-        String novoResumo;
-        do {
-            System.out.print("Novo resumo do curso: ");
-            novoResumo = scanner.nextLine().trim();
-        } while (!novoResumo.matches("[a-zA-Z ]+"));
-
-        // Chama o método de atualização na classe DAO
-        adicionarCursoDAO.atualizarResumoCursoPorId(idDoCurso, novoResumo);
-        System.out.println("Resumo do curso atualizado com sucesso!");
-
-        voltarAtualizarMaisUmDado ();
-    }
-
-    // Função para atualizar o valor do curso
-    public void atualizarValorCurso(int idDoCurso) {
-        double novoValor = 0.0;
-        boolean valorValido = false;
-        do {
-            System.out.print("Novo valor do curso: ");
-            String inputValor = scanner.nextLine().trim();
-
-            try {
-                novoValor = Double.parseDouble(inputValor);
-                valorValido = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Por favor, insira um valor numérico válido.");
-            }
-        } while (!valorValido);
-
-        // Chama o método de atualização na classe DAO
-        adicionarCursoDAO.atualizarValorCursoPorId(idDoCurso, novoValor);
-        System.out.println("Valor do curso atualizado com sucesso!");
-
-        voltarAtualizarMaisUmDado ();
-    }
-
-
-
-
-    public void voltarAtualizarMaisUmDado() {
-        int opcaoVoltarAtualizarMaisUmDado = -1;
-
-        while (opcaoVoltarAtualizarMaisUmDado != 0) {
-            try {
-                System.out.println("1 - Atualizar mais um dado");
-                System.out.println("0 - Voltar");
-
-                opcaoVoltarAtualizarMaisUmDado = scanner.nextInt();
-                scanner.nextLine();  // Consumir a quebra de linha após a leitura do número
-
-                switch (opcaoVoltarAtualizarMaisUmDado) {
-                    case 1:
-                        AtualizarDadoCurso();
-                        break;
-                    case 0:
-                        escolherAtualizacao();
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println("Erro teste");
-                scanner.nextLine();  // Limpar o buffer do scanner em caso de exceção
-            }
+        public MenuVendedor() {
+                vendedorDAO = new VendedorDAO();
+                vendedor = new Vendedor();
+                scanner = new Scanner(System.in);
         }
-    }
+
+        public void menuPrincipalVendedor(Vendedor vendedor){
+
+                int escolha = -1;  // Inicializa com um valor inválido para entrar no loop.
+
+                do {
+                        try {
+
+                                System.out.println("1 - Perfil");
+                                System.out.println("2 - Curso");
+                                System.out.println("0 - Sair");
 
 
+                                escolha = scanner.nextInt();
 
-    public void AtualizarDadoCurso() {
-        int opcaoAtualizarDado = -1;
+                                switch (escolha) {
+                                        case 1:
+                                                break;
+                                        case 2:
+                                                curso(vendedor);
+                                                break;
+                                        case 0:
+                                                System.exit(0);
+                                                break;
+                                        default:
+                                                System.out.println("Opção inválida. Tente novamente.");
+                                                break;
+                                }
+                        } catch (InputMismatchException e) {
+                                System.out.println("Porfavor digite um número valido");
+                        }
 
-        while (opcaoAtualizarDado != 0) {
-            try {
-                System.out.println("1 - Atualizar nome do curso");
-                System.out.println("2 - Atualizar o resumo do curso");
-                System.out.println("3 - Atualizar o valor do curso");
-                System.out.println("0 - Voltar");
-
-                opcaoAtualizarDado = scanner.nextInt();
-                scanner.nextLine();  // Consumir a quebra de linha após a leitura do número
-
-                switch (opcaoAtualizarDado) {
-                    case 1:
-//atualizarNomeCurso();
-                        break;
-                    case 2:
-                     //   atualizarResumoCurso();
-                        break;
-                    case 3:
-                     //   atualizarValorCurso();
-                        break;
-                    case 0:
-                        escolherAtualizacao();
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println("Erro");
-                scanner.nextLine();  // Limpar o buffer do scanner em caso de exceção
-            }
+                } while (escolha != 0);
         }
-    }
+
+        public void perfil (){
 
 
-    public void escolherAtualizacao () {
-
-        int opcaoAtualizacaoEscolha = -1;
-
-        while (opcaoAtualizacaoEscolha != 0) {
-            try {
-                System.out.println("1 - Atualizar tudo");
-                System.out.println("2 - Atualizar apenas um dado");
-                System.out.println("0 - Voltar");
-
-                opcaoAtualizacaoEscolha = scanner.nextInt();
-
-                switch (opcaoAtualizacaoEscolha) {
-
-                    case 1:
-                        atualizarCurso ();
-                        break;
-                    case 2:
-                        AtualizarDadoCurso();
-                        break;
-                    case 0:
-                        gerenciarCursos();
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                        break;
-
-                }
-
-            } catch (Exception e) {
-                System.out.println("Erro");
-            }
         }
-    }
+
+        public void curso(Vendedor vendedor) {
+
+                int escolha = -1;  // Inicializa com um valor inválido para entrar no loop.
+
+                do {
+                        try {
+
+                                System.out.println("1 - Adicionar curso");
+                                System.out.println("2 - Atualizar curso");
+                                System.out.println("0 - Voltar");
+
+                                escolha = scanner.nextInt();
+
+                                switch (escolha) {
+                                        case 1:
+                                                menuAdicionarCurso(vendedor);
+                                                break;
+                                        case 2:
+                                                break;
+                                        case 0:
+                                                menuPrincipalVendedor(vendedor);
+                                                break;
+                                        default:
+                                                System.out.println("Opção inválida. Tente novamente.");
+                                                break;
+                                }
+                        } catch (InputMismatchException e) {
+                                System.out.println("Porfavor digite um número valido");
+                        }
+
+                } while (escolha != 0);
+
+        }
+
+        public void menuAdicionarCurso(Vendedor vendedor) {
+
+                String cpf = vendedor.getusuarioLogadoCPF();
+
+                int idUsuarioLogado = vendedor.getUsuarioLogadoId();
+                String nomeUsuarioLogado = vendedor.getUsuarioLogadoNome();
+
+                // Nome do curso
+                String nomeCurso;
+                do {
+                        System.out.print("Nome do curso: ");
+                        nomeCurso = scanner.nextLine().trim();
+                } while (!nomeCurso.matches("[a-zA-Z ]+"));
+
+                // Resumo do curso
+                String resumoCurso;
+                do {
+                        System.out.print("Resumo do curso: ");
+                        resumoCurso = scanner.nextLine().trim();
+                } while (!resumoCurso.matches("[a-zA-Z ]+"));
+
+                // Conteúdo do curso
+                String conteudoCurso;
+                do {
+                        System.out.print("Conteúdo do curso: ");
+                        conteudoCurso = scanner.nextLine().trim();
+                } while (!conteudoCurso.matches("[a-zA-Z ]+"));
+
+                // Valor do curso
+                double valorCurso = 0.0;
+                boolean valorValido = false;
+                do {
+                        System.out.print("Valor do curso: ");
+                        String inputValor = scanner.nextLine().trim();
+
+                        try {
+                                valorCurso = Double.parseDouble(inputValor);
+                                valorValido = true;
+                        } catch (NumberFormatException e) {
+                                System.out.println("Por favor, insira um valor numérico válido.");
+                        }
+                } while (!valorValido);
+
+                // Obter o id e o nome do usuário logado
 
 
 
-    public void gerenciarCursos() {
 
 
-        int opcaoGerenciar = -1;
 
-        while (opcaoGerenciar != 0) {
-            try {
-                System.out.println("Atualizar curso");
-                System.out.println("Remover curso");
-                System.out.println("0 - Voltar");
+                System.out.println(idUsuarioLogado);
+                System.out.println(nomeUsuarioLogado);
 
-                opcaoGerenciar = scanner.nextInt();
+                // Criar uma
+                // de AdicionarCursoDAO
+                AdicionarCursoDAO adicionarCursoDAO = new AdicionarCursoDAO();
 
-                switch (opcaoGerenciar) {
+                // Chamar a função para adicionar o curso ao banco de dados
+                adicionarCursoDAO.adicionarCurso(nomeCurso, resumoCurso, conteudoCurso, valorCurso, idUsuarioLogado, nomeUsuarioLogado);
 
-                    case 1:
-                        escolherAtualizacao();
-                        break;
-                    case 2:
-                        break;
-                    case 0:
-                        cursos();
+                menuPrincipalVendedor(vendedor);
 
-                    default:
-                        System.out.println("Opção inválida");
-                        break;
-                }
+        }
 
-            } catch (Exception e) {
-                System.out.println("Erro");
-            }
+        public void menuAtualizarCurso() {
+
+                int escolha = -1;  // Inicializa com um valor inválido para entrar no loop.
+
+                do {
+                        try {
+
+                                System.out.println("1 - Ver cursos");
+                                System.out.println("0 - Voltar");
+
+                                escolha = scanner.nextInt();
+
+                                switch (escolha) {
+                                        case 1:
+                                                break;
+                                        case 0:
+                                                System.exit(0);
+                                                break;
+                                        default:
+                                                System.out.println("Opção inválida. Tente novamente.");
+                                                break;
+                                }
+                        } catch (InputMismatchException e) {
+                                System.out.println("Porfavor digite um número valido");
+                        }
+
+                } while (escolha != 0);
+
         }
 
 
-    }
 
 
-    public void cursos() {
-        int opcaoCursos = -1;
-
-        while (opcaoCursos != 0) {
-            try {
-                System.out.println("1 - Adicionar curso");
-                System.out.println("2 - Gerenciar cursos");
-                System.out.println("0 - Voltar");
-
-                opcaoCursos = scanner.nextInt();
-
-                switch (opcaoCursos) {
-
-                    case 1:
-                        adicionarCurso();
-                        break;
-                    case 2:
-                        gerenciarCursos();
-                        break;
-                    case 0:
-                        menuPrincipal();
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                        break;
-
-                }
 
 
-            } catch (Exception e) {
-                System.out.println("Erro");
-            }
-        }
-
-
-    }
-
-    public void clientes() {
-
-        int opcaoClientes = -1;
-
-        while (opcaoClientes != 0) {
-
-            try {
-                System.out.println("1 - Ver meus clientes");
-                System.out.println("0 - Voltar");
-
-
-                opcaoClientes = scanner.nextInt();
-
-                switch (opcaoClientes) {
-                    case 1:
-                        break;
-                    case 0:
-                        menuPrincipal();
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                        break;
-                }
-
-            } catch (Exception e) {
-                System.out.println("Erro");
-            }
-        }
-
-
-    }
-
-    public void perfil() {
-
-        int opcaoPerfil = -1;
-
-        while (opcaoPerfil != 0) {
-            try {
-                System.out.println("1 - Ver dados");
-                System.out.println("2 - Conta");
-                System.out.println("0 - Voltar");
-
-                switch (opcaoPerfil) {
-
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 0:
-                        menuPrincipal();
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
-                        break;
-
-                }
-
-            } catch (Exception e) {
-                System.out.println("Erro");
-            }
-        }
-
-    }
-
-
-    public void menuPrincipal() { // Menu Principal
-
-        int opcao = -1;
-
-        while (opcao != 0) {
-
-            try {
-                System.out.println("Escolha uma opção");
-                System.out.println("1 - Perfil");
-                System.out.println("2 - Cursos");
-                System.out.println("3 - Clientes");
-                System.out.println("0 - Sair");
-
-                opcao = scanner.nextInt();
-
-                switch (opcao) {
-
-                    case 1:
-                        perfil();
-                        break;
-                    case 2:
-                        cursos();
-                        break;
-                    case 3:
-                        clientes();
-                        break;
-                    case 0:
-
-                        break;
-                    default:
-                        System.out.println("Opçção invalída");
-                        break;
-
-
-                }
-
-
-            } catch (Exception e) {
-                System.out.println("Erro teste2");
-            }
-
-        }
-    }
 }

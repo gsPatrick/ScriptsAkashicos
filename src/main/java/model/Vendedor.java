@@ -6,6 +6,11 @@ public class Vendedor {
     private String nome;
     private String cpf;
 
+    private int usuarioLogadoId;
+    private String usuarioLogadoNome;
+
+    private String usuarioLogadoCPF;
+
     // Construtor
     public Vendedor(String email, String senha, String nome, String cpf) {
         this.email = email;
@@ -14,9 +19,11 @@ public class Vendedor {
         this.cpf = cpf;
     }
 
-    // Construtor vazio
     public Vendedor() {
     }
+
+    // Construtor vazio
+
 
     // Getters e Setters
     public String getEmail() {
@@ -50,4 +57,30 @@ public class Vendedor {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
+    public int getUsuarioLogadoId() {
+        return usuarioLogadoId;
+    }
+
+    public void setUsuarioLogadoId(int usuarioLogadoId) {
+        this.usuarioLogadoId = usuarioLogadoId;
+    }
+
+    public String getUsuarioLogadoNome(){
+        return usuarioLogadoNome;
+    }
+
+    public void setUsuarioLogadoNome(String usuarioLogadoNome) {
+        this.usuarioLogadoNome = usuarioLogadoNome;
+    }
+
+    public String getusuarioLogadoCPF(){
+        return usuarioLogadoCPF;
+    }
+
+    public void setusuarioLogadoCPF(String usuarioLogadoCPF) {
+        this.usuarioLogadoCPF = usuarioLogadoCPF;
+    }
+
+
 }

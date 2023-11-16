@@ -73,6 +73,52 @@ public class ConsumidorDAO {
             e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
             return false;
         }
-
     }
+
+    private static final String obterIdCPF = "SELECT id FROM consumidor WHERE cpf = ?";
+
+    public int obterIdPorCPF(String cpf) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(obterIdCPF)) {
+
+            preparedStatement.setString(1, cpf);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id"); // Retorna o ID se houver resultados
+                } else {
+                    return -1; // Retorna -1 se não houver resultados
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
+            return -1;
+        }
+    }
+
+    private static final String obterNomeCPF = "SELECT nome FROM consumidor WHERE cpf = ?";
+
+    public String obterNomePorCPF(String cpf) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(obterNomeCPF)) {
+
+            preparedStatement.setString(1, cpf);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("nome"); // Retorna o nome se houver resultados
+                } else {
+                    return null; // Retorna null se não houver resultados
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Trate a exceção de maneira apropriada para sua aplicação
+            return null;
+        }
+    }
+
+
+
 }

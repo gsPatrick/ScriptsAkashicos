@@ -6,6 +6,11 @@ public class Consumidor {
     private String nome;
     private String cpf;
 
+    private int usuarioLogadoIdConsumidor;
+
+    private String usuarioLogadoNomeConsumidor;
+
+
     // Construtor
     public Consumidor(String email, String senha, String nome, String cpf) {
         this.email = email;
@@ -14,7 +19,6 @@ public class Consumidor {
         this.cpf = cpf;
     }
 
-    // Construtor vazio
     public Consumidor() {
     }
 
@@ -49,5 +53,21 @@ public class Consumidor {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public int getUsuarioLogadoIdConsumidor() {
+        return usuarioLogadoIdConsumidor;
+    }
+
+    public void setUsuarioLogadoIdConsumidor(int usuarioLogadoIdConsumidor) {
+        this.usuarioLogadoIdConsumidor = usuarioLogadoIdConsumidor;
+    }
+
+    public String getusuarioLogadoNomeConsumidor() {
+        return usuarioLogadoNomeConsumidor;
+    }
+
+    public void setusuarioLogadoNomeConsumidor(String usuarioLogadoNomeConsumidor) {
+        this.usuarioLogadoNomeConsumidor = usuarioLogadoNomeConsumidor;
     }
 }

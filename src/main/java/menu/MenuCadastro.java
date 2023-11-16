@@ -10,10 +10,6 @@ public class MenuCadastro {
     private VendedorDAO vendedorDAO = new VendedorDAO();
     private MenuLogin menuLogin;
 
-    public MenuCadastro(MenuLogin menuLogin) {
-        this.menuLogin = menuLogin;
-    }
-
     public void exibirMenuCadastro() {
 
         while (true) {
